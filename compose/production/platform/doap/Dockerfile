@@ -21,7 +21,6 @@ RUN pip install --upgrade pip
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
 RUN pip install -r /requirements/production.txt
-COPY . /code/
 
 # trigger the collectstatic via /start
 COPY ./compose/production/platform/doap/start /code/start
@@ -29,3 +28,7 @@ RUN sed -i 's/\r//' /code/start
 RUN chmod +x /code/start
 
 CMD ["/code/start"]
+
+COPY . /code/
+
+
