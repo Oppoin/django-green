@@ -24,6 +24,8 @@ RUN pip install -r /requirements/production.txt
 COPY . /code/
 
 # trigger the collectstatic via /start
-COPY ./compose/production/platform/doap/start /start
-RUN sed -i 's/\r//' /start
-RUN chmod +x /start
+COPY ./compose/production/platform/doap/start /code/start
+RUN sed -i 's/\r//' /code/start
+RUN chmod +x /code/start
+
+CMD ["/code/start"]
