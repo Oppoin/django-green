@@ -6,6 +6,9 @@ databases:
     name: db-postgresql-fra1-72665
     production: true
     version: "10"
+domains:
+  - domain: djangogreen.com
+    type: PRIMARY
 name: django-version1-saas-builder
 region: fra
 services:
@@ -24,6 +27,9 @@ services:
       - key: DEBUG
         scope: RUN_AND_BUILD_TIME
         value: "False"
+      - key: DJANGO_SETTINGS_MODULE
+        scope: RUN_AND_BUILD_TIME
+        value: composeexample.settings.production
     github:
       branch: follow-eno-a3-django
       deploy_on_push: true
@@ -45,7 +51,7 @@ static_sites:
       branch: follow-eno-a3-django
       deploy_on_push: true
       repo: Oppoin/django-green
-    name: django-green-static
+    name: static
     output_dir: /code/staticfiles
     routes:
       - path: /static
