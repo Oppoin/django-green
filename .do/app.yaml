@@ -42,7 +42,7 @@ services:
       - path: /
     run_command: gunicorn --error-logfile /var/log/gunicorn.error --access-logfile /var/log/gunicorn.access --worker-tmp-dir /dev/shm composeexample.wsgi
 static_sites:
-  - dockerfile_path: compose/production/platform/doap/static_sites/Dockerfile
+  - name: static
     envs:
       - key: DATABASE_URL
         scope: BUILD_TIME
@@ -51,7 +51,6 @@ static_sites:
       branch: follow-eno-a3-django
       deploy_on_push: true
       repo: Oppoin/django-green
-    name: static
-    output_dir: /code/staticfiles
+    output_dir: /staticfiles
     routes:
       - path: /static
