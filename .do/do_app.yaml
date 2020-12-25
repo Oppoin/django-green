@@ -1,0 +1,71 @@
+databases:
+  - name: db
+    cluster_name: db-postgresql-fra1-72665
+    db_name: defaultdb
+    db_user: doadmin
+    engine: PG
+    name: db-postgresql-fra1-72665
+    production: true
+    version: "12"
+name: django-v1-saas-builder
+region: fra
+jobs:
+  - name: migrate
+    kind: PRE_DEPLOY
+    github:
+      repo: digitalocean/sample-django
+      branch: static
+      deploy_on_push: true
+    run_command: python manage.py migrate
+    envs:
+    - key: DISABLE_COLLECTSTATIC
+      value: "1"
+      scope: BUILD_TIME
+    - key: DATABASE_URL
+      value: "${db.DATABASE_URL}"
+      scope: RUN_TIME
+services:
+  - name: server
+    envs:
+      - key: DATABASE_URL
+        scope: RUN_TIME
+        value: ${db.DATABASE_URL}
+      - key: DJANGO_SECRET_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: EV[1:tpQ95donZpnniNE+tjAx0BRYv8eqn5Cr:6xURygv4M+5My+cofEWs3K2HUsPt5iFJM/iseKk3Ukrc3IMjZaW/4j4jkjinzq3U4a5esA==]
+      - key: DJANGO_ALLOWED_HOSTS
+        scope: RUN_AND_BUILD_TIME
+        value: ${APP_DOMAIN}
+      - key: DISABLE_COLLECTSTATIC
+        value: "1"
+        scope: BUILD_TIME
+      - key: DEBUG
+        scope: RUN_AND_BUILD_TIME
+        value: "False"
+      - key: DJANGO_SETTINGS_MODULE
+        scope: RUN_AND_BUILD_TIME
+        value: composeexample.settings.production
+    github:
+      branch: upgrade-everything
+      deploy_on_push: true
+      repo: Oppoin/django-green
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xs
+    routes:
+      - path: /
+    run_command: gunicorn --error-logfile /var/log/gunicorn.error --access-logfile /var/log/gunicorn.access --worker-tmp-dir /dev/shm composeexample.wsgi
+static_sites:
+  - name: static
+    envs:
+      - key: DATABASE_URL
+        scope: RUN_TIME
+        value: ${db.DATABASE_URL}
+    github:
+      branch: upgrade-everything
+      deploy_on_push: true
+      repo: Oppoin/django-green
+    output_dir: /staticfiles
+    routes:
+      - path: /static
