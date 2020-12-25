@@ -1,8 +1,4 @@
-django==2.2.17  # https://www.djangoproject.com/
-django-allauth==0.43.0  # https://github.com/pennersr/django-allauth
-
-psycopg2==2.8.6 --no-binary psycopg2  # https://github.com/psycopg/psycopg2
-
-# production perhaps
-dj_database_url==0.5.0 # https://github.com/jacobian/dj-database-url
-gunicorn==20.0.4  # https://github.com/benoitc/gunicorn
+# Note this assumes DigitalOcean
+# which requires at least one of setup.py, requirements.txt, and Pipfile in repo root
+# See https://www.digitalocean.com/docs/app-platform/languages-frameworks/python/#limits
+-r requirements/production.txt
