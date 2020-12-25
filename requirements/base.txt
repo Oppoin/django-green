@@ -1,4 +1,4 @@
-django==2.2.17  # https://www.djangoproject.com/
+django==3.1.4  # https://www.djangoproject.com/
 django-allauth==0.43.0  # https://github.com/pennersr/django-allauth
 
 psycopg2==2.8.6 --no-binary psycopg2  # https://github.com/psycopg/psycopg2
