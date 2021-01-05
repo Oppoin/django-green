@@ -42,13 +42,6 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
     # 'django.contrib.humanize', # Handy template tags
     "django.contrib.admin",
-    # setup allauth requires django.contrib.auth
-    # django.contrib.messages, django.contrib.sites
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    # then declare which provider you want
-    "allauth.socialaccount.providers.github",
 ]
 
 # needed by allauth
@@ -56,7 +49,13 @@ SITE_ID = 1
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
+# under https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_EMAIL_REQUIRED = True
+# SOCIALACCOUNT_EMAIL_REQUIRED = True
+
 LOGIN_REDIRECT_URL = "home"
+
+# for connecting https://stackoverflow.com/a/64110735/80353
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
@@ -65,12 +64,41 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         "APP": {"client_id": "123", "secret": "456", "key": ""}
-    }
+    },
+    # https://docs.github.com/en/free-pro-team@latest/developers/apps/scopes-for-oauth-apps
+    "github": {
+        "SCOPE": [
+            "user:email",  # need to be explicit https://github.com/pennersr/django-allauth/issues/369
+            # because of public email setting, https://stackoverflow.com/questions/35373995/github-user-email-is-null-despite-useremail-scope
+            # 'repo',
+            # 'read:org',
+        ],
+        "VERIFIED_EMAIL": True,
+    },
+    # https://developers.digitalocean.com/documentation/oauth/#scopes
+    "digitalocean": {
+        "SCOPE": [
+            "read write",
+        ],
+        "VERIFIED_EMAIL": True,
+    },
 }
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "django_extensions",
+    # setup allauth requires django.contrib.auth
+    # django.contrib.messages, django.contrib.sites
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    # then declare which provider you want
+    "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.digitalocean",
+]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    "core",
+]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -113,6 +141,9 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
+# https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
+AUTH_USER_MODEL = "core.CustomUser"
 
 WSGI_APPLICATION = "composeexample.wsgi.application"
 
