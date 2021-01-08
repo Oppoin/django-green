@@ -9,6 +9,9 @@
         <form method="post">
             {% csrf_token %}
             {{form.as_p}}
+            <select name="sizes" id="sizes" hx-get="/do/sizes" hx-trigger="load">
+                <option value="none">original</option>
+            </select>
             <button type="submit" class="btn btn-success">Create</button>
         </form>
     </div>

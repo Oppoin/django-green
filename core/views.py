@@ -77,3 +77,17 @@ class ServerCreate(CreateView):
         response = super().form_valid(form)
         if self.request.accepts("text/html"):
             return response
+
+
+def load_do_sizes(request):
+    user = request.user
+    social_token = SocialToken.objects.filter(
+        account__user=user, account__provider="digitalocean"
+    ).first()
+
+    sizes = []
+    if social_token:
+        manager = digitalocean.Manager(token=social_token.token)
+        sizes = manager.get_all_sizes()
+
+    return render(request, "core/do/sizes.html", {"sizes": sizes})
