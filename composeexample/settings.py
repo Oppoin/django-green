@@ -49,6 +49,7 @@ DJANGO_APPS = [
     "allauth.socialaccount",
     # then declare which provider you want
     "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.github",
 ]
 
 # needed by allauth
@@ -56,7 +57,7 @@ SITE_ID = 1
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
-LOGIN_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "/servers"
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {

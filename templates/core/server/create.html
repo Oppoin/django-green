@@ -1,4 +1,5 @@
 {% extends "__base.html" %}
+{% load template_filters %}
 
 {% block container %}
 <div class="card">
@@ -6,12 +7,40 @@
         <h5 class="card-title">Create a New Server</h5>
     </div>
     <div class="card-body">
-        <form method="post">
+        <form method="post" class="form-horizontal">
             {% csrf_token %}
-            {{form.as_p}}
-            <select name="sizes" id="sizes" hx-get="/do/sizes" hx-trigger="load">
-                <option value="none">original</option>
-            </select>
+            <div class="form-inline form-group">
+                <label class="col-md-4 text-right" style="justify-content: flex-end;">Name</label>
+                <input name="name" id="name" class="form-control" />
+            </div>
+            <div class="form-inline form-group">
+                <label class="col-md-4 text-right" style="justify-content: flex-end;">Size</label>
+                <select name="size" id="sizes" class="form-control"
+                    hx-get="/do/regions" hx-target="#regions" hx-indicator=".htmx-indicator">
+                    {% for size in sizes %}
+                    <option value="{{ size.slug  }}">{{ size | get_display_from_size  }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-inline form-group">
+                <label class="col-md-4 text-right" style="justify-content: flex-end;">Region</label>
+                <select name="region" id="regions" class="form-control"
+                hx-get="/do/images" hx-target="#images" hx-indicator=".htmx-indicator">
+                    {% for region in regions %}
+                    <option value="{{ region.slug  }}">{{ region.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-inline form-group">
+                <label class="col-md-4 text-right" style="justify-content: flex-end;">Image</label>
+                <select name="image" id="images" class="form-control">
+                    {% for image in images %}
+                    <option value="{{ image.slug  }}">{{ image.distribution }} - {{ image.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
             <button type="submit" class="btn btn-success">Create</button>
         </form>
     </div>

@@ -14,6 +14,10 @@ class Home(TemplateView):
     template_name = "home.html"
 
 
+class LoginView(TemplateView):
+    template_name = "core/login.html"
+
+
 class About(TemplateView):
     template_name = "core/about.html"
 

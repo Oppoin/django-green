@@ -53,7 +53,7 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = True
 # SOCIALACCOUNT_EMAIL_REQUIRED = True
 
-LOGIN_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "/servers"
 
 # for connecting https://stackoverflow.com/a/64110735/80353
 
@@ -186,7 +186,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGOUT_REDIRECT_URL = "/accounts/login"
+LOGOUT_REDIRECT_URL = "/login"
+LOGIN_URL = "/login"
 
 
 # Internationalization

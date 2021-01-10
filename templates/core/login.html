@@ -1,0 +1,10 @@
+{% extends "__base.html" %}
+{% load socialaccount %}
+{% load template_filters %}
+
+
+{% block container %}
+
+Login using your <a href="{% provider_login_url 'digitalocean' process='login' %}">DigitalOcean</a> account
+
+{% endblock %}

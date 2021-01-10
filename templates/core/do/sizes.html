@@ -1,4 +1,5 @@
-<option value="">---------</option>
+{% load template_filters %}
+
 {% for size in sizes %}
-<option value="{{ size.slug }}">{{ size.slug }}</option>
+<option value="{{ size.slug  }}">{{ size | get_display_from_size  }}</option>
 {% endfor %}

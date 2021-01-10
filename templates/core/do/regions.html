@@ -1,0 +1,5 @@
+{% load template_filters %}
+
+{% for obj in objects %}
+<option value="{{ obj.slug  }}">{{ obj.name }}</option>
+{% endfor %}

@@ -2,6 +2,18 @@
 {% load template_filters %}
 
 {% block container %}
+
+<nav aria-label="breadcrumb" class="breadcrumb">
+
+    <a class="btn btn-primary" href="/servers/create" role="button">+ New Server</a>
+</nav>
+
+{% if is_empty %}
+<div>No servers yet! Add a <a href="/servers/create">new one</a></div>
+
+{% else %}
+
+
 <table class="table">
     <tr>
         <thead class="thead-light">
@@ -10,6 +22,7 @@
                 <th scope="col">IP Address</th>
                 <th scope="col">Size</th>
                 <th scope="col">Region</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -21,10 +34,14 @@
                 </td>
                 <td>{{server.size_slug}}</td>
                 <td>{{server.region.name}}</td>
+                <td><a class="btn btn-danger"
+                    hx-confirm="Are you sure you want to delete this server?"
+                    href="#" hx-post="/servers/{{ server.id }}/delete" hx-target="body" role="button">Destroy</a></td>
             </tr>
             {% endfor %}
         </tbody>
 </table>
+{% endif %}
 {% if is_paginated %}
     {% include "_pagination.html" %}
 {% endif %}

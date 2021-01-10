@@ -1,0 +1,5 @@
+{% load template_filters %}
+
+{% for obj in objects %}
+<option value="{{ obj | get_attr_from_object:key  }}">{{ obj | get_attr_from_object:key  }}</option>
+{% endfor %}
